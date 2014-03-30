@@ -9,7 +9,6 @@ after_success:
  # - "mvn source:jar javadoc:jar deploy -DskipTests=true --settings target/travis/settings.xml -B"
  # Trigger dependent builds
  - "gem install travis"
- - "travis login --no-interactive --auto"
  - "for dep in $CI_DEPENDENT_BUILDS; do travis restart --no-interactive -r $dep; done"
 
 # whitelist
@@ -22,6 +21,7 @@ env:
   global:
     # Define dependent builds
     - "CI_DEPENDENT_BUILDS=\"FasterXML/jackson-module-scala\""
+    - secure: "K1P3av5Dy+Qg2bwn1hLyKXoAg13AIigLHzHKzZbtZs/j1u5QFhMAyo6m6cDgGwpld3qprMcdfLLpzQAh0YSP/bWXNG/RmLePW6GENauKFR9XrnzMJJhEyz1bC6yYblNLOeUUcQbOW+2KoZY1oapLubjXp1loMRv25rm6LdoD0Pw="
     - secure: "ZIFMeNzZCvLYWICiUyHFSm8Ypz6lYFbF/+LGz6a+Sh8B9tSnvYvlrE4gSFJj3NzRWY0RG/vizoyFEpVgxOnzXDMLuuy/dreupnHR1FfVmiaiceK4JHRwAzl0lQzr2hdVwJbqpX0GfrxKmbg8Jvv9WPKtfM6X4167ElVj4O/8IRc="
     - secure: "VOC/J8eFbM2OeysBp0Gx0G73MySRATCoN7hc9Ok0kJXE/dbE/2KOoFlTwwxUgErwJXkjJKKXafYcbq/22S7wkaoDW5XAvplSu3skxdE0NRGVzozcDMXO5UoGlt9Ti4XIBMCvy7bB/NO+J5IgNedCtcNnBsrGZCdodW3DTYtqQLs="
 

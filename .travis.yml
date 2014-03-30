@@ -9,7 +9,8 @@ after_success:
  # - "mvn source:jar javadoc:jar deploy -DskipTests=true --settings target/travis/settings.xml -B"
  # Trigger dependent builds
  - "gem install travis"
- - "for dep in $CI_DEPENDENT_BUILDS; do travis restart --no-interactive --auto -r $dep; done"
+ - "travis login --auto"
+ - "for dep in $CI_DEPENDENT_BUILDS; do travis restart --no-interactive -r $dep; done"
 
 # whitelist
 branches:

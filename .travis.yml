@@ -2,13 +2,13 @@ language: java
 jdk:
   - openjdk6
 
-# Below this line is configuration for deploying to the Sonatype OSS repo
-# http://blog.xeiam.com/2013/05/configure-travis-ci-to-deploy-snapshots.html
-before_install: "git clone -b travis `git config --get remote.origin.url` target/travis"
 after_success:
  # Deploy new versions to Nexus
- - "mvn source:jar javadoc:jar deploy -DskipTests=true --settings target/travis/settings.xml -B"
+ # Based on http://blog.xeiam.com/2013/05/configure-travis-ci-to-deploy-snapshots.html
+ # - "git clone -b travis `git config --get remote.origin.url` target/travis"
+ # - "mvn source:jar javadoc:jar deploy -DskipTests=true --settings target/travis/settings.xml -B"
  # Trigger dependent builds
+ - "gem install travis"
  - "for dep in $CI_DEPENDENT_BUILDS; do travis restart -r $dep; done"
 
 # whitelist

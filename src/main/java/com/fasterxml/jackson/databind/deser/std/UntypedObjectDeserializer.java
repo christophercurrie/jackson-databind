@@ -56,6 +56,8 @@ public class UntypedObjectDeserializer
     protected JsonDeserializer<Object> _stringDeserializer;
 
     protected JsonDeserializer<Object> _numberDeserializer;
+
+    protected boolean _resolved;
     
     public UntypedObjectDeserializer() {
         super(Object.class);
@@ -71,6 +73,7 @@ public class UntypedObjectDeserializer
         _listDeserializer = (JsonDeserializer<Object>) listDeser;
         _stringDeserializer = (JsonDeserializer<Object>) stringDeser;
         _numberDeserializer = (JsonDeserializer<Object>) numberDeser;
+        _resolved = false;
     }
     
     /*
@@ -94,6 +97,7 @@ public class UntypedObjectDeserializer
         _listDeserializer = _findCustomDeser(ctxt, tf.constructCollectionType(List.class, obType));
         _stringDeserializer = _findCustomDeser(ctxt, stringType);
         _numberDeserializer = _findCustomDeser(ctxt, tf.constructType(Number.class));
+        _resolved = true;
     }
 
     @SuppressWarnings("unchecked")
@@ -112,6 +116,10 @@ public class UntypedObjectDeserializer
     public JsonDeserializer<?> createContextual(DeserializationContext ctxt,
             BeanProperty property) throws JsonMappingException
     {
+        if (!_resolved) {
+            throw new IllegalStateException("createContextual called before resolved");
+        }
+
         // 20-Apr-2014, tatu: If nothing custom, let's use "vanilla" instance,
         //     simpler and can avoid some of delegation
         if ((_stringDeserializer == null) && (_numberDeserializer == null)
